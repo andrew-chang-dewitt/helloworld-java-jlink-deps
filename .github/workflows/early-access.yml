@@ -1,8 +1,6 @@
 name: Early Access
 
 on:
-  commit:
-    branches: [ main ]
   push:
     branches: [ main ]
 
