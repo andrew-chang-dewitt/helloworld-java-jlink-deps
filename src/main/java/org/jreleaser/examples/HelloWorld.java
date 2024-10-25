@@ -17,10 +17,16 @@
  */
 package org.jreleaser.examples;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class HelloWorld {
+    private static final Logger LOGGER = LogManager.getLogger(Main.class);
+
     public static void main(String[] args) {
         String name = "world";
         if (args != null && args.length > 0) name = args[0];
-        System.out.println("Hello " + name);
+        LOGGER.info("Hello " + name);
+        System.exit(0);
     }
 }
