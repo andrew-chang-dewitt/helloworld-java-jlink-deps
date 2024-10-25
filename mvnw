@@ -279,9 +279,6 @@ export MAVEN_CMD_LINE_ARGS
 
 WRAPPER_LAUNCHER=org.apache.maven.wrapper.MavenWrapperMain
 
-exec "$JAVACMD" \
-  $MAVEN_OPTS \
-  $MAVEN_DEBUG_OPTS \
-  -classpath "$MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.jar" \
-  "-Dmaven.multiModuleProjectDirectory=${MAVEN_PROJECTBASEDIR}" \
-  ${WRAPPER_LAUNCHER} $MAVEN_CONFIG "$@"
+CMD="$JAVACMD $MAVEN_OPTS $MAVEN_DEBUG_OPTS -classpath $MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.jar -Dmaven.multiModuleProjectDirectory=${MAVEN_PROJECTBASEDIR} ${WRAPPER_LAUNCHER} $MAVEN_CONFIG $@"
+echo "running\n$CMD"
+exec $CMD
