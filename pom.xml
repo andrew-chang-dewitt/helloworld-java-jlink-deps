@@ -75,6 +75,13 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
     <!-- required for detecting platform settings -->
     <extensions>
       <extension>
@@ -119,14 +126,6 @@
             <configuration>
               <pkgs>
                 <pkg>
-                  <name>zulu17LinuxMuslIntel</name>
-                  <platform>linux-x86_64</platform>
-                  <version>${jdk.version}</version>
-                  <libcType>musl</libcType>
-                  <archiveType>tar.gz</archiveType>
-                </pkg>
-
-                <pkg>
                   <name>zulu17LinuxIntel</name>
                   <platform>linux-x86_64</platform>
                   <version>${jdk.version}</version>
@@ -136,6 +135,15 @@
                   <name>zulu17OsxIntel</name>
                   <platform>osx-x86_64</platform>
                   <version>${jdk.version}</version>
+                </pkg>
+
+                <!-- NOTE: Uncomment any platforms below to make them available for cross-platform runtime builds
+                <pkg>
+                  <name>zulu17LinuxMuslIntel</name>
+                  <platform>linux-x86_64</platform>
+                  <version>${jdk.version}</version>
+                  <libcType>musl</libcType>
+                  <archiveType>tar.gz</archiveType>
                 </pkg>
 
                 <pkg>
@@ -162,6 +170,7 @@
                   <platform>windows-aarch64</platform>
                   <version>${jdk.version}</version>
                 </pkg>
+                -->
               </pkgs>
             </configuration>
           </plugin>
@@ -191,6 +200,7 @@
                 </configuration>
               </execution>
 
+              <!-- NOTE: Uncomment these as well for cross platform dependencies
               <execution>
                 <id>osx</id>
                 <phase>generate-resources</phase>
@@ -202,7 +212,9 @@
                   <classifier>mac</classifier>
                 </configuration>
               </execution>
+              -->
 
+              <!--
               <execution>
                 <id>win</id>
                 <phase>generate-resources</phase>
@@ -214,6 +226,7 @@
                   <classifier>win</classifier>
                 </configuration>
               </execution>
+              -->
 
               <execution>
                 <id>linux</id>

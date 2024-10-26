@@ -1,8 +1,8 @@
 environment:
   properties:
-    jdkPathPrefix: 'target/jdks'
-    jdkFilePrefix: 'zulu17.32.13-ca-jdk17.0.2'
-    jpackageDir: 'out/jreleaser/assemble/helloworld-installer/jpackage'
+    jdkPathPrefix: "target/jdks"
+    jdkFilePrefix: "zulu17.32.13-ca-jdk17.0.2"
+    jpackageDir: "out/jreleaser/assemble/helloworld-installer/jpackage"
 
 project:
   name: helloworld
@@ -16,7 +16,7 @@ project:
   inceptionYear: 2023
   stereotype: cli
   java:
-    version: '11'
+    version: "11"
     groupId: org.jreleaser.examples
     artifactId: helloworld
     mainClass: org.jreleaser.examples.HelloWorld
@@ -25,62 +25,65 @@ assemble:
   jlink:
     helloworld-jlink:
       active: ALWAYS
-      imageName: '{{distributionName}}-{{projectVersion}}'
+      imageName: "{{distributionName}}-{{projectVersion}}"
       targetJdks:
-        - path: '{{jdkPathPrefix}}/zulu17OsxIntel/{{jdkFilePrefix}}-macosx_x64/zulu-17.jdk/Contents/Home'
-          platform: 'osx-x86_64'
-        - path: '{{jdkPathPrefix}}/zulu17OsxArm/{{jdkFilePrefix}}-macosx_aarch64/zulu-17.jdk/Contents/Home'
-          platform: 'osx-aarch_64'
-        - path: '{{jdkPathPrefix}}/zulu17LinuxIntel/{{jdkFilePrefix}}-linux_x64'
-          platform: 'linux-x86_64'
-        - path: '{{jdkPathPrefix}}/zulu17LinuxMuslIntel/{{jdkFilePrefix}}-linux_musl_x64'
-          platform: 'linux_musl-x86_64'
-        - path: '{{jdkPathPrefix}}/zulu17LinuxArm/{{jdkFilePrefix}}-linux_aarch64'
-          platform: 'linux-aarch_64'
-        - path: '{{jdkPathPrefix}}/zulu17WindowsIntel/{{jdkFilePrefix}}-win_x64'
-          platform: 'windows-x86_64'
-        - path: '{{jdkPathPrefix}}/zulu17WindowsArm/{{jdkFilePrefix}}-win_aarch64'
-          platform: 'windows-aarch_64'
+        ## NOTE: Uncomment any of the below to also build a runtime for the associated platform
+        # - path: '{{jdkPathPrefix}}/zulu17OsxIntel/{{jdkFilePrefix}}-macosx_x64/zulu-17.jdk/Contents/Home'
+        #   platform: 'osx-x86_64'
+        # - path: '{{jdkPathPrefix}}/zulu17OsxArm/{{jdkFilePrefix}}-macosx_aarch64/zulu-17.jdk/Contents/Home'
+        #   platform: 'osx-aarch_64'
+        - path: "{{jdkPathPrefix}}/zulu17LinuxIntel/{{jdkFilePrefix}}-linux_x64"
+          platform: "linux-x86_64"
+        # - path: '{{jdkPathPrefix}}/zulu17LinuxMuslIntel/{{jdkFilePrefix}}-linux_musl_x64'
+        #   platform: 'linux_musl-x86_64'
+        # - path: '{{jdkPathPrefix}}/zulu17LinuxArm/{{jdkFilePrefix}}-linux_aarch64'
+        #   platform: 'linux-aarch_64'
+        # - path: '{{jdkPathPrefix}}/zulu17WindowsIntel/{{jdkFilePrefix}}-win_x64'
+        #   platform: 'windows-x86_64'
+        # - path: '{{jdkPathPrefix}}/zulu17WindowsArm/{{jdkFilePrefix}}-win_aarch64'
+        #   platform: 'windows-aarch_64'
       jdeps:
-        multiRelease: '11'
+        multiRelease: "11"
         ignoreMissingDeps: true
       mainJar:
-        path: 'target/helloworld-{{projectVersion}}.jar'
+        path: "target/helloworld-{{projectVersion}}.jar"
       jars:
-        - pattern: 'target/repositories/universal/*.jar'
-        - pattern: 'target/repositories/osx/*.jar'
-          platform: 'osx-x86_64'
-        - pattern: 'target/repositories/osx/*.jar'
-          platform: 'osx-aarch_64'
-        - pattern: 'target/repositories/linux/*.jar'
-          platform: 'linux-x86_64'
-        - pattern: 'target/repositories/linux/*.jar'
-          platform: 'linux_musl-x86_64'
-        - pattern: 'target/repositories/linux/*.jar'
-          platform: 'linux-aarch_64'
-        - pattern: 'target/repositories/windows/*.jar'
-          platform: 'windows-x86_64'
-        - pattern: 'target/repositories/windows/*.jar'
-          platform: 'windows-aarch_64'
-  jpackage:
-    helloworld-installer:
-      active: ALWAYS
-      jlink: 'helloworld-jlink'
-      attachPlatform: false
-      exported: false
-      applicationPackage:
-        appName: helloworld
-        vendor: JReleaser
-      osx:
-        types: [dmg, pkg]
-        appName: 'helloworld'
-        packageName: 'helloworld'
-        packageIdentifier: 'org.jreleaser.examples.helloworld'
-      linux:
-        types: [deb]
-        maintainer: 'andrew-chang-dewitt'
-      windows:
-        types: [msi]
+        ## NOTE: Uncomment any of the below to ensure the correct dependencies are included in the runtime of the associated platform
+        - pattern: "target/repositories/universal/*.jar"
+        # - pattern: 'target/repositories/osx/*.jar'
+        #   platform: 'osx-x86_64'
+        # - pattern: 'target/repositories/osx/*.jar'
+        #   platform: 'osx-aarch_64'
+        - pattern: "target/repositories/linux/*.jar"
+          platform: "linux-x86_64"
+        # - pattern: 'target/repositories/linux/*.jar'
+        #   platform: 'linux_musl-x86_64'
+        # - pattern: 'target/repositories/linux/*.jar'
+        #   platform: 'linux-aarch_64'
+        # - pattern: 'target/repositories/windows/*.jar'
+        #   platform: 'windows-x86_64'
+        # - pattern: 'target/repositories/windows/*.jar'
+        #   platform: 'windows-aarch_64'
+        ## NOTE: Uncomment below section and `dispatch` root level section to enable building installers using jpackage
+        # jpackage:
+        #   helloworld-installer:
+        #     active: ALWAYS
+        #     jlink: 'helloworld-jlink'
+        #     attachPlatform: false
+        #     exported: false
+        #     applicationPackage:
+        #       appName: helloworld
+        #       vendor: JReleaser
+        #     osx:
+        #       types: [dmg, pkg]
+        #       appName: 'helloworld'
+        #       packageName: 'helloworld'
+        #       packageIdentifier: 'org.jreleaser.examples.helloworld'
+        #     linux:
+        #       types: [deb]
+        #       maintainer: 'andrew-chang-dewitt'
+        #     windows:
+        #       types: [msi]
 
 release:
   github:
@@ -89,22 +92,21 @@ release:
       formatted: ALWAYS
       preset: conventional-commits
       contributors:
-        format: '- {{contributorName}}{{#contributorUsernameAsLink}} ({{.}}){{/contributorUsernameAsLink}}'
+        format: "- {{contributorName}}{{#contributorUsernameAsLink}} ({{.}}){{/contributorUsernameAsLink}}"
       hide:
-        categories: 
+        categories:
           - merge
         contributors: [GitHub, dependabot]
-
-distributions:
-  helloworld-installer:
-    artifacts:
-      - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-osx-x86_64.dmg'
-        platform: osx-x86_64
-      - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-osx-x86_64.pkg'
-        platform: osx-x86_64
-      - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-l_amd64.deb'
-        platform: linux-x86_64
-      - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-l.amd64.rpm'
-        platform: linux-x86_64
-      - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-windows-x86_64.msi'
-        platform: windows-x86_64
+# distributions:
+#   helloworld-installer:
+#     artifacts:
+#       - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-osx-x86_64.dmg'
+#         platform: osx-x86_64
+#       - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-osx-x86_64.pkg'
+#         platform: osx-x86_64
+#       - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-l_amd64.deb'
+#         platform: linux-x86_64
+#       - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-l.amd64.rpm'
+#         platform: linux-x86_64
+#       - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-windows-x86_64.msi'
+#         platform: windows-x86_64
