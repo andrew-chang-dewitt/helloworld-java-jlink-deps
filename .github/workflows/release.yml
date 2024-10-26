@@ -31,7 +31,7 @@ jobs:
           git config --global user.name "GitHub Action"
           git commit -a -m "Releasing version $VERSION"
           git push origin main
-          echo $VERSION >> "$GITHUB_OUTPUT"
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
 
   release:
     needs: [ precheck ]
