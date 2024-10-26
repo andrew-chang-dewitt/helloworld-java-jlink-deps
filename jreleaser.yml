@@ -2,6 +2,7 @@ environment:
   properties:
     jdkPathPrefix: 'target/jdks'
     jdkFilePrefix: 'zulu17.32.13-ca-jdk17.0.2'
+    jpackageDir: 'out/jreleaser/assemble/helloworld-installer/jpackage'
 
 project:
   name: helloworld
@@ -15,23 +16,14 @@ project:
   inceptionYear: 2023
   stereotype: cli
   java:
-    version: 11
+    version: '11'
     groupId: org.jreleaser.examples
     artifactId: helloworld
     mainClass: org.jreleaser.examples.HelloWorld
 
-release:
-  github:
-    overwrite: true
-    changelog:
-      formatted: ALWAYS
-      preset: conventional-commits
-      contributors:
-        format: '- {{contributorName}}{{#contributorUsernameAsLink}} ({{.}}){{/contributorUsernameAsLink}}'
-
 assemble:
   jlink:
-    helloworld:
+    helloworld-jlink:
       active: ALWAYS
       imageName: '{{distributionName}}-{{projectVersion}}'
       targetJdks:
@@ -49,5 +41,70 @@ assemble:
           platform: 'windows-x86_64'
         - path: '{{jdkPathPrefix}}/zulu17WindowsArm/{{jdkFilePrefix}}-win_aarch64'
           platform: 'windows-aarch_64'
+      jdeps:
+        multiRelease: '11'
+        ignoreMissingDeps: true
       mainJar:
-        path: 'target/{{distributionName}}-{{projectVersion}}.jar'
+        path: 'target/helloworld-{{projectVersion}}.jar'
+      jars:
+        - pattern: 'target/repositories/universal/*.jar'
+        - pattern: 'target/repositories/osx/*.jar'
+          platform: 'osx-x86_64'
+        - pattern: 'target/repositories/osx/*.jar'
+          platform: 'osx-aarch_64'
+        - pattern: 'target/repositories/linux/*.jar'
+          platform: 'linux-x86_64'
+        - pattern: 'target/repositories/linux/*.jar'
+          platform: 'linux_musl-x86_64'
+        - pattern: 'target/repositories/linux/*.jar'
+          platform: 'linux-aarch_64'
+        - pattern: 'target/repositories/windows/*.jar'
+          platform: 'windows-x86_64'
+        - pattern: 'target/repositories/windows/*.jar'
+          platform: 'windows-aarch_64'
+  jpackage:
+    helloworld-installer:
+      active: ALWAYS
+      jlink: 'helloworld-jlink'
+      attachPlatform: true
+      exported: false
+      applicationPackage:
+        appName: helloworld
+        vendor: JReleaser
+      osx:
+        types: [dmg, pkg]
+        appName: 'helloworld'
+        packageName: 'helloworld'
+        packageIdentifier: 'org.jreleaser.examples.helloworld'
+      linux:
+        types: [deb]
+        maintainer: 'andrew-chang-dewitt'
+      windows:
+        types: [msi]
+
+release:
+  github:
+    overwrite: true
+    changelog:
+      formatted: ALWAYS
+      preset: conventional-commits
+      contributors:
+        format: '- {{contributorName}}{{#contributorUsernameAsLink}} ({{.}}){{/contributorUsernameAsLink}}'
+      hide:
+        categories: 
+          - merge
+        contributors: [GitHub, dependabot]
+
+distributions:
+  helloworld-installer:
+    artifacts:
+      - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-osx-x86_64.dmg'
+        platform: osx-x86_64
+      - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-osx-x86_64.pkg'
+        platform: osx-x86_64
+      - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-l_amd64.deb'
+        platform: linux-x86_64
+      - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-l.amd64.rpm'
+        platform: linux-x86_64
+      - path: '{{jpackageDir}}/helloworld-{{projectVersion}}-windows-x86_64.msi'
+        platform: windows-x86_64
